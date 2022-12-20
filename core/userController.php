@@ -17,12 +17,13 @@
         case "log-admin":
             logAdmin();
         break;
-        case "log-out";
+        case "log-out":
+            logOut();
         break;
     endswitch;
 
     // les différentes fonctions de notre controleur
-    function logAdmin(){
+    function logAdmin() {
         // besoin de notre connexion
         require("connexion.php");
         // vérification de l'email de l'admin qui est unique
@@ -38,12 +39,13 @@
         // traitement des données
         // on vérifie que l'email existe, pour se faire on utilise la fonction mysqli_num_rows() qui compte le nombre de ligne
         if (mysqli_num_rows($query) > 0):
-        // on met sous forme de tableau associatif les données de
-        // l'admin récupéré
-        $user = mysqli_fetch_assoc($query);
-        // ensuite il faut vérifier le mot de passe
-        // le but c'est de vérifier si le mot de passe saisie = à l'encodage stocké en bdd
-        // avec la fonction password_verify() qui nous renvoie true ou false, on vérifie le mot de passe.
+            // on met sous forme de tableau associatif les données de
+            // l'admin récupéré
+            $user = mysqli_fetch_assoc($query);
+            // ensuite il faut vérifier le mot de passe
+            // le but c'est de vérifier si le mot de passe saisie = à l'encodage stocké en bdd
+            // avec la fonction password_verify() qui nous renvoie true ou false, on vérifie le mot de passe.
+            
             if (password_verify(trim($_POST["password"]), $user["password"])):
                 // vérifier le rôle
                 // on dit que 1 c'est le role admin
@@ -70,11 +72,12 @@
             endif;
         else:
             // sinon pas d'utilisateur identifié
-            $_SESSION["message"] = "Désolé, pas d'administrateur identifié !!!";
+            $_SESSION["message"] = "Désolé, pas d'email correspondant :(";
             header("Location:../admin/index.php");
             exit;
         endif;
     }
+
     function logOut(){
         // pour déconnecter l'admin, il faut supprimer les variables de session
         // on détruit la session avec session_destroy()
@@ -86,5 +89,4 @@
         header("Location:../index.php");
         exit;
     }
-
-
+    

@@ -20,8 +20,13 @@ include("../assets/inc/headerFront.php");
                     <input class="form-control" type="text" name="nom" placeholder="votre nom">
                     <input class="form-control mt-3" type="text" name="prenom" placeholder="votre prénom">
                     <input class="form-control mt-3" type="email" name="email" placeholder="votre email">
-                    <input class="form-control mt-3" type="password" name="password" placeholder="votre mot de passe">
+                    <input class="form-control mt-3 " type="password" name="password" placeholder="votre mot de passe">
+                    <label for="defaultCheck1"> Administrateur : </label>
+                    <input class="form-check-input" type="checkbox" name="isAdmin" id="defaultCheck1">
+                    <br>
                     <button class="btn bg-primary text-light fw-bold mt-3" type="submit" name="soumettre">Enregistrer</button>
+
+
                     </form>
                     <?php
                 //on récupère le fichier de connexion -> connexion.php qui correspond aux paramètre de connexion de notre bdd
@@ -35,12 +40,22 @@ include("../assets/inc/headerFront.php");
                     $options = ['cost' => 12];
                     $password = password_hash(trim($_POST
                     ["password"]),PASSWORD_DEFAULT, $options);
-                    // on dit que 1 est admin pour le rôle
-                    $role1 = 1;
+
+
+                    if($_POST["isAdmin"]) {
+                    // si la case "isAdmin" est cochée... 
+                    $role = 1;
+
+                }
+                else {
+                    // si la case "isAdmin" est cochée... 
+                    $role = 2;
+
+                }
                     // préparation de l'ecriture SQL
                     $sql = "
                         INSERT INTO user (nom,prenom,email,password,role)
-                        VALUE ('$nom', '$prenom', '$email', '$password', '$role1')
+                        VALUE ('$nom', '$prenom', '$email', '$password', '$role')
                     ";
 
                     // execution de la requète avec les paramètre de connexion
